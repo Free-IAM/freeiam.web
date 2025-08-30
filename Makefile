@@ -1,0 +1,82 @@
+# SPDX-FileCopyrightText: 2025 Florian Best
+# SPDX-License-Identifier: CC0-1.0
+
+.PHONY: test docs docs-open testenv lint lint-all ruff-check ruff-fix ruff-unsafe-fix ruff-statistics ruff-preview-statistics ruff-unsafe-preview-fix format-check format changelog next-version preview-changelog publish build upload coverage copyright prek-install
+
+PRE_COMMIT=prek
+UV=uv
+
+test:
+	-tox
+
+docs:
+	-tox -e docs
+
+docs-open:
+	-xdg-open docs/_build/html/index.html
+
+testenv:
+	-tox -e py311 --develop
+	-. .tox/py311/bin/activate
+
+lint:
+	{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs $(PRE_COMMIT) run --files
+
+lint-all:
+	$(PRE_COMMIT) run -a
+
+ruff-check:
+	$(PRE_COMMIT) run -a ruff
+
+ruff-fix:
+	$(PRE_COMMIT) run -a --hook-stage manual ruff-fix || true
+	$(PRE_COMMIT) run -a --hook-stage manual ruff-fix
+
+ruff-unsafe-fix:
+	$(PRE_COMMIT) run -a --hook-stage manual ruff-unsafe-fix
+
+ruff-statistics:
+	$(PRE_COMMIT) run -a --hook-stage manual ruff-statistics
+
+ruff-preview-statistics:
+	$(PRE_COMMIT) run -a --hook-stage manual ruff-preview-statistics
+
+ruff-unsafe-preview-fix:
+	$(PRE_COMMIT) run -a --hook-stage manual ruff-unsafe-preview-fix
+
+format-check:
+	$(PRE_COMMIT) run -a ruff-format-check
+
+format:
+	$(PRE_COMMIT) run -a --hook-stage manual ruff-format-fix || true
+	$(PRE_COMMIT) run -a --hook-stage manual ruff-format-fix
+
+changelog:
+	PREK_SKIP=ruff,mypy,ty $(UV) run semantic-release version --no-push --skip-build --changelog --commit
+
+next-version:
+	$(UV) run semantic-release version --no-push --skip-build --changelog --no-commit --no-tag
+
+preview-changelog:
+	$(UV) run semantic-release changelog
+	git diff CHANGELOG.md
+	git checkout CHANGELOG.md
+
+publish:
+	$(UV) run semantic-release publish
+
+build:
+	python -m build
+
+upload:
+	twine upload dist/*
+
+coverage:
+	-coverage html
+
+copyright:
+	-prek run -a --hook-stage manual reuse-annotate
+	-prek run -a --hook-stage manual reuse-lint
+
+prek-install:
+	prek install

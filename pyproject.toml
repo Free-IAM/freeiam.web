@@ -1,0 +1,302 @@
+[project]
+name = "freeiam.web"
+description = "Web components for FreeIAM, a free and flexible Identity and Access Management solution."
+authors = [{ name = "Florian Best", email = "contact@freeiam.org" }]
+version = "0.0.0"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT OR Apache-2.0"
+dependencies = ["freeiam>=0.11.0"]
+
+[project.urls]
+homepage = "https://freeiam.org"
+documentation = "https://docs.freeiam.org"
+repository = "https://github.com/Free-IAM/freeiam.web"
+changelog = "https://github.com/Free-IAM/freeiam.web/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["freeiam.web", "freeiam.web.*"]
+namespaces = true
+
+[dependency-groups]
+dev = ["build", "ty", "pytest", "pytest-cov", "pytest-timeout", "tox", "python-semantic-release", "ruff"]
+test = ["pytest", "pytest-cov", "pytest-timeout"]
+docs = ["sphinx", "furo"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.coverage.run]
+branch = true
+source = ["freeiam.web"]
+
+[tool.coverage.report]
+skip_empty = true
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "if typing.TYPE_CHECKING:", "@overload"]
+
+[tool.coverage.html]
+skip_empty = true
+
+[tool.ruff]
+target-version = "py311"
+output-format = "concise"
+unsafe-fixes = true
+preview = true
+
+namespace-packages = ["freeiam"]
+line-length = 150
+
+[tool.ruff.lint]
+preview = true
+
+select = ["ALL"]
+ignore = [
+ "T20",  # allow use of print()
+ # "I",  # isort, ruff isort is missing features
+ "ANN",  # missing type annotation
+ "ERA",  # don't remove commented out code
+ "D107",  # Missing docstring in `__init__`
+ "D203",  # incorrect-blank-line-before-class
+ "D212",  # Multi-line docstring summary should start at the first line
+ "DOC201",  # `return` is not documented in docstring
+ "DOC501",  # Raised exception missing from docstring
+ "DOC402",  # `yield` is not documented in docstring
+ "D105",  # Missing docstring in magic method
+ "SLF001",  # Private member accessed
+ "PLR0904",  # Too many public methods (> 20)
+ "PLR0913",  # Too many arguments in function definition"
+ "PLR0917",  # Too many positional arguments
+ "FBT001",  # Boolean-typed positional argument in function definition
+ "FBT002",  # Boolean default positional argument in function definition
+ "S404",  # `subprocess` module is possibly insecure
+ "RSE102",  # unnecessary-paren-on-raise-exception
+ "TD001",  # invalid-todo-tag, we allow FIXME
+ "TD002", # Missing author in TODO
+ "TD003", # Missing issue link for this TODO
+ "FIX001", # Line contains FIXME, consider resolving the issue
+ "FIX002", # Line contains TODO, consider resolving the issue
+ "EM101",  # Exception must not use a string literal, assign to variable first
+ "N818",
+ "PLW0717",  # too-many-statements-in-try-clause
+ "D421",  # property-docstring-starts-with-verb
+ "RUF105",  # noqa-comments
+ "RUF201",  # rule-codes-in-selectors
+
+ "COM812",  # missing-trailing-comma
+]
+
+unfixable = ["RUF100", "T20"]
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+task-tags = ["TODO", "FIXME"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"src/*.py" = [
+ "INP001",
+]
+"src/*" = [
+ "PLC2701",
+ "PLW0406",
+]
+
+"tests/*" = [
+ "D",
+ "S603",
+ "S607",
+ "S101",
+ "PLC0415",
+ "CPY001",
+ "INP001",
+ "ARG001",
+ "S403",
+ "S301",
+ "PLR2004",
+]
+
+"!**/conftest.py" = ["pytest-fixture-autouse"]
+
+"docs/*" = [
+ "D",
+ "PIE790",
+ "S603",
+ "S607",
+ "S101",
+ "PLC0415",
+ "CPY001",
+ "INP001",
+ "ARG001",
+ "S403",
+ "S301",
+ "FBT003",
+ "B018",
+ "B015",
+ "PLR2004",
+ "E402",
+ "N815",
+]
+"*/__init__.py" = ["D104"]
+"stubs/*" = [
+  "E501",  # line-too-long
+  "N815",  # mixed-case-variable-in-class-scope
+  "N801",  # invalid-class-name
+  "N803",  # invalid-argument-name
+  "N802",  # invalid-function-name
+  "N816",  # mixed-case-variable-in-global-scope
+  "CPY001",  # missing-copyright-notice
+  "PLC2701",  # import-private-name
+  "A002",  # builtin-argument-shadowing
+  "F403",  # undefined-local-with-import-star
+  "PYI001",  # unprefixed-type-param
+  "F405",  # undefined-local-with-import-star-usage
+]
+
+[tool.ruff.lint.flake8-builtins]
+builtins-ignorelist = ["copyright", "license", "object", "exit", "quit", "credits"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 20
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+multiline-quotes = "double"
+inline-quotes = "single"
+
+[tool.ruff.lint.flake8-unused-arguments]
+ignore-variadic-names = true
+
+[tool.ruff.lint.flake8-pytest-style]
+parametrize-names-type = "csv"
+
+[tool.ruff.lint.flake8-annotations]
+ignore-fully-untyped = true
+
+[tool.ruff.lint.ruff]
+parenthesize-tuple-in-subscript = true
+
+[tool.ruff.lint.flake8-copyright]
+notice-rgx = "(?:Copyright(?:\\s+\\(C\\)|:)?|SPDX-FileCopyrightText:)\\s+([0-9, -]+)\\s+"
+min-file-size = 2
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+#filter-files = true
+#force-grid-wrap = false
+known-first-party = ["freeiam"]
+known-third-party = []
+# https://github.com/astral-sh/ruff/issues/2600 :
+#multi-line-output = 5
+#include-trailing-comma = true
+lines-after-imports = 2
+#skip-glob = "venv/*"
+
+[tool.semantic_release]
+assets = []
+build_command_env = []
+commit_message = "chore(release): publish {version}\n\n[create-release!]"
+commit_parser = "conventional"
+logging_use_named_masks = false
+major_on_zero = true
+allow_zero_version = true
+no_git_verify = false
+tag_format = "v{version}"
+version_toml = ["pyproject.toml:project.version"]
+
+[tool.semantic_release.branches.main]
+match = "(main|master)"
+prerelease_token = "rc"
+prerelease = false
+
+[tool.semantic_release.branches.dev]
+match = "(dev|feat/*)"
+prerelease_token = "rc"
+prerelease = false
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = [
+    '''^chore(?:\([^)]*?\))?: .+''',
+    '''^ci(?:\([^)]*?\))?: .+''',
+    '''^refactor(?:\([^)]*?\))?: .+''',
+    '''^style(?:\([^)]*?\))?: .+''',
+    '''^test(?:\([^)]*?\))?: .+''',
+    '''^build\((?!deps\): .+)''',
+    '''^docs\(readthedocs\): .+''',
+    '''^feat: initial source code structure.*''',
+    '''\[skip-changelog\]''',
+    '''[\S\s]*\[skip-changelog\]''',
+]
+mode = "update"
+insertion_flag = "<!-- version list -->"
+
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG.md"
+output_format = "md"
+mask_initial_release = true
+
+[tool.semantic_release.changelog.environment]
+block_start_string = "{%"
+block_end_string = "%}"
+variable_start_string = "{{"
+variable_end_string = "}}"
+comment_start_string = "{#"
+comment_end_string = "#}"
+trim_blocks = false
+lstrip_blocks = false
+newline_sequence = "\n"
+keep_trailing_newline = false
+extensions = []
+autoescape = false
+
+[tool.semantic_release.commit_author]
+env = "GIT_COMMIT_AUTHOR"
+default = "semantic-release <semantic-release@freeiam.org>"
+
+[tool.semantic_release.commit_parser_options]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf"]
+other_allowed_tags = ["build", "chore", "ci", "docs", "style", "refactor", "test"]
+allowed_tags = ["feat", "fix", "perf", "build", "chore", "ci", "docs", "style", "refactor", "test"]
+default_bump_level = 0
+parse_squash_commits = true
+ignore_merge_commits = true
+
+[tool.semantic_release.remote]
+name = "origin"
+type = "github"
+ignore_token_for_push = false
+insecure = false
+
+[tool.semantic_release.publish]
+dist_glob_patterns = ["dist/*"]
+upload_to_vcs_release = false
+
+[tool.ty.terminal]
+output-format = "concise"
+
+[tool.ty.environment]
+python-version = "3.11"
+
+[[tool.ty.overrides]]
+include = ["docs/**", "tests/**"]
+
+[tool.ty.overrides.rules]
+all = "ignore"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+show_error_codes = true
+explicit_package_bases = true
+namespace_packages = true
+mypy_path = ["src"]
+files = ["src/"]

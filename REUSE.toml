@@ -1,0 +1,31 @@
+version = 1
+SPDX-PackageName = "FreeIAM Web"
+SPDX-PackageSupplier = "Florian Best <info@freeiam.org>"
+SPDX-PackageDownloadLocation = "https://www.freeiam.org/"
+
+[[annotations]]
+path = [
+ "src/**/*.py",
+ "tests/**/*.py"
+]
+SPDX-FileCopyrightText = "2025 Florian Best <info@freeiam.org>"
+SPDX-License-Identifier = "MIT OR Apache-2.0"
+
+[[annotations]]
+path = [
+ "*.md",
+ ".gitignore",
+ "tox.ini",
+ "pytest.ini",
+ "**/pyproject.toml",
+ "**/Makefile",
+ "*.yml",
+ "*.yaml",
+ "*.toml",
+ "docs/**/*.rst",
+ "docs/conf.py",
+ "docs/requirements.txt",
+ ".github/workflows/*.yml",
+]
+SPDX-FileCopyrightText = "2025 Florian Best <info@freeiam.org>"
+SPDX-License-Identifier = "CC0-1.0"

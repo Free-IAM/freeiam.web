@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: 2025 Florian Best
+# SPDX-License-Identifier: CC0-1.0
+include README.md CHANGELOG.md LICENSES/MIT.txt LICENSES/Apache-2.0.txt
+recursive-exclude tests *
+recursive-exclude docs *
+recursive-exclude .github *
